@@ -1,5 +1,6 @@
 package com.whalesocks.spotifystreamer;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -54,12 +56,17 @@ public class MainActivityFragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listview_artist_search_result);
         listView.setAdapter(mSearchResults);
 
-        EditText searchEditText = (EditText) rootView.findViewById(R.id.search_artist_text);
+        final EditText searchEditText = (EditText) rootView.findViewById(R.id.search_artist_text);
 
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    //hide keyboard after enter key
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchEditText.getWindowToken(), 0);
+
                     searchForArtist(v.getText().toString());
                     Log.v(LOG_TAG, v.getText().toString());
                     return true;
