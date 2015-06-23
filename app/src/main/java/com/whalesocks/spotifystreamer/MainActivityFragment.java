@@ -1,8 +1,8 @@
 package com.whalesocks.spotifystreamer;
 
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,13 +14,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import kaaes.spotify.webapi.android.*;
-import kaaes.spotify.webapi.android.models.Artist;
-import kaaes.spotify.webapi.android.models.ArtistsPager;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.ArtistsPager;
 
 
 /**
@@ -47,7 +48,7 @@ public class MainActivityFragment extends Fragment {
         mSearchResults = new ArrayAdapter<String> (
             getActivity(),
             R.layout.list_item_result,
-            R.id.listview_artist_search_result,
+            R.id.text_view_artist_name,
             new ArrayList<String>());
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_artist_search_result);
@@ -70,9 +71,16 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
-    private void searchForArtist (String artistName) {
+    private void clearArrayList () {
+        artistsName.clear();
+        spotifyId.clear();
+        artistImageURL.clear();
+    }
+
+    private void searchForArtist (String searchArtistName) {
+        clearArrayList();
         SearchFetchArtistTask searchTask = new SearchFetchArtistTask();
-        searchTask.execute(artistName);
+        searchTask.execute(searchArtistName);
     }
 
     public class SearchFetchArtistTask extends AsyncTask<String, Void, ArtistsPager> {
@@ -104,14 +112,13 @@ public class MainActivityFragment extends Fragment {
                 spotifyId.add(artist.id);
 
                 Log.v(LOG_TAG, "Artist Name = " + artist.name);
-                Log.v (LOG_TAG, "Spotify ID = " + artist.id);
+                Log.v(LOG_TAG, "Spotify ID = " + artist.id);
 
-                if (artist.images.size() != 0) {
+                int thumb = artist.images.size();
+                if (thumb != 0) {
 
-                    //Log.v(LOG_TAG, "Image size = " + artist.images.size());
-
-                    //Only require the 1st image of the Artist
-                    String url = artist.images.get(0).url;
+                    //Get the smallest size image in the image list
+                    String url = artist.images.get(thumb-1).url;
                     artistImageURL.add(url);
 
                     Log.v(LOG_TAG, "Image URL = " + url);
@@ -120,6 +127,10 @@ public class MainActivityFragment extends Fragment {
                     //No image for this Artist
                     artistImageURL.add("");
                 }
+            }
+
+            for (String name : artistsName) {
+                Log.v(LOG_TAG, "Artist Name: " + name);
             }
 
             mSearchResults.clear();
