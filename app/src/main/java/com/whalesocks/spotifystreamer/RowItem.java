@@ -31,7 +31,7 @@ public class RowItem {
     }
 
     public String getArtistImageURL() {
-        return getArtistImageURL();
+        return artistImageURL;
     }
 
     public void setArtistImageURL(String artistImageURL) {

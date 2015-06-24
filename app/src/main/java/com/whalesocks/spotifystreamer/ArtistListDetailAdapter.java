@@ -41,14 +41,18 @@ final class ArtistListDetailAdapter extends BaseAdapter {
 
         holder.text.setText(rowItem.getArtistName());
 
-        Picasso.with(context)
-                .load(rowItem.getArtistImageURL())
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder)
-                .centerInside()
-                .tag(context)
-                .into(holder.image);
-
+        String url = rowItem.getArtistImageURL();
+        if (url.isEmpty()) {
+            holder.image.setImageResource(R.drawable.icon_no_images);
+        }
+        else {
+            Picasso.with(context)
+                    .load(url)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .tag(context)
+                    .into(holder.image);
+        }
         return view;
     }
 
