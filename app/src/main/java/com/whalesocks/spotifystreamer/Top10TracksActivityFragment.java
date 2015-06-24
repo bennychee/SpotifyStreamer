@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,10 +39,19 @@ public class Top10TracksActivityFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_top10_tracks, container, false);
 
+
+        getActivity().requestWindowFeature(Window.FEATURE_ACTION_BAR);
         ActionBar actionbar = getActivity().getActionBar();
 
         rowItems = new ArrayList<>();
