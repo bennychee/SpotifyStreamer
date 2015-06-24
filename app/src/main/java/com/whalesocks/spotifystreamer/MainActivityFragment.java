@@ -2,16 +2,19 @@ package com.whalesocks.spotifystreamer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -69,6 +72,18 @@ public class MainActivityFragment extends Fragment {
                 return false;
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String artistSpotifyId = rowItems.get(position).getSpotifyId();
+                Intent intent = new Intent(getActivity(), Top10TracksActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, artistSpotifyId);
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }
