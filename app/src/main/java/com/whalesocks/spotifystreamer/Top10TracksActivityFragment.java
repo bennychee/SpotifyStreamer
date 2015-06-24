@@ -3,28 +3,34 @@ package com.whalesocks.spotifystreamer;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.ArtistsPager;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.Tracks;
-import kaaes.spotify.webapi.android.models.TracksPager;
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class Top10TracksActivityFragment extends Fragment {
+
+    private List<RowItem> rowItems;
+    Top10TracksAdapter tracksAdapter;
+    String artistSportifyId = null;
 
     public Top10TracksActivityFragment() {
     }
@@ -34,14 +40,27 @@ public class Top10TracksActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_top10_tracks, container, false);
 
-        String artistSportifyId;
+        rowItems = new ArrayList<>();
+
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_artist_top_10_tracks);
+        tracksAdapter = new Top10TracksAdapter(getActivity(),rowItems);
+        listView.setAdapter(tracksAdapter);
+
+
 
         Intent intent = getActivity().getIntent();
         if (intent !=null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             artistSportifyId = intent.getStringExtra(Intent.EXTRA_TEXT);
         }
 
+        fetchTop10Tracks(artistSportifyId);
+
         return rootView;
+    }
+
+    private void fetchTop10Tracks (String id) {
+        fetchTop10TracksTask fetchTask = new fetchTop10TracksTask();
+        fetchTask.execute(id);
     }
 
     public class fetchTop10TracksTask extends AsyncTask<String, Void, Tracks> {
@@ -56,7 +75,10 @@ public class Top10TracksActivityFragment extends Fragment {
             SpotifyApi api = new SpotifyApi();
             SpotifyService spotify = api.getService();
 
-            return spotify.getTracks(params[0]);
+            HashMap query = new HashMap();
+            query.put("country", "US");
+
+            return spotify.getArtistTopTrack(params[0], query);
 
         }
 
@@ -71,6 +93,7 @@ public class Top10TracksActivityFragment extends Fragment {
         @Override
         protected void onPostExecute(Tracks tracks) {
             super.onPostExecute(tracks);
+
             progressDialog.dismiss();
 
             if (tracks.tracks.isEmpty()) {
@@ -79,12 +102,33 @@ public class Top10TracksActivityFragment extends Fragment {
                 List<Track> trackList = tracks.tracks;
                 Iterator<Track> iterator = trackList.iterator();
 
+                RowItem mTracks = null;
+                rowItems.clear();
+
                 while (iterator.hasNext()) {
 
+                    Track trackSimple = iterator.next();
+                    String name = trackSimple.name;
+                    String albumName = trackSimple.album.name;
+
+                    Log.v(LOG_TAG, "Track Name = " + name);
+                    Log.v(LOG_TAG, "Track Album Name = " + albumName);
+
+                    int thumb = trackSimple.album.images.size();
+
+                    if (thumb != 0) {
+                        String url = trackSimple.album.images.get(thumb-1).url;
+                        mTracks = new RowItem(name, albumName, artistSportifyId, url);
+                        rowItems.add(mTracks);
+                    } else {
+                        mTracks = new RowItem(name, albumName, artistSportifyId, "");
+                        rowItems.add(mTracks);
+                    }
                 }
+
+                tracksAdapter.notifyDataSetChanged();
             }
         }
     }
-
 }
 
