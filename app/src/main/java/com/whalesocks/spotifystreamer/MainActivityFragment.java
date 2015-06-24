@@ -40,6 +40,8 @@ public class MainActivityFragment extends Fragment {
     List<String> spotifyId = new ArrayList<String>();
     List<String> artistImageURL = new ArrayList<String>();
 
+    private List<RowItem> rowItems;
+
     public MainActivityFragment() {
     }
 
@@ -57,8 +59,13 @@ public class MainActivityFragment extends Fragment {
             R.id.text_view_artist_name,
             new ArrayList<String>());
 
+
+        rowItems = new ArrayList<RowItem>();
+        ArtistListDetailAdapter artistAdapter = new ArtistListDetailAdapter(getActivity(),rowItems);
+
         ListView listView = (ListView) rootView.findViewById(R.id.listview_artist_search_result);
-        listView.setAdapter(mSearchResults);
+//        listView.setAdapter(mSearchResults);
+        listView.setAdapter(artistAdapter);
 
         final EditText searchEditText = (EditText) rootView.findViewById(R.id.search_artist_text);
 
@@ -132,6 +139,8 @@ public class MainActivityFragment extends Fragment {
                 List<Artist> artistList = artistsPager.artists.items;
                 Iterator<Artist> iterator = artistList.iterator();
 
+                RowItem mArtist = null;
+
                 while (iterator.hasNext()) {
 
                     Artist artist = iterator.next();
@@ -139,8 +148,8 @@ public class MainActivityFragment extends Fragment {
                     artistsName.add(artist.name);
                     spotifyId.add(artist.id);
 
-                    Log.v(LOG_TAG, "Artist Name = " + artist.name);
-                    Log.v(LOG_TAG, "Spotify ID = " + artist.id);
+//                    Log.v(LOG_TAG, "Artist Name = " + artist.name);
+//                    Log.v(LOG_TAG, "Spotify ID = " + artist.id);
 
                     int thumb = artist.images.size();
                     if (thumb != 0) {
@@ -149,10 +158,13 @@ public class MainActivityFragment extends Fragment {
                         String url = artist.images.get(thumb - 1).url;
                         artistImageURL.add(url);
 
-                        Log.v(LOG_TAG, "Image URL = " + url);
+                        mArtist = new RowItem(artist.name, artist.id, url);
+
+//                        Log.v(LOG_TAG, "Image URL = " + url);
 
                     } else {
                         //No image for this Artist
+                        mArtist = new RowItem(artist.name, artist.id, "");
                         artistImageURL.add("");
                     }
                 }
@@ -161,8 +173,10 @@ public class MainActivityFragment extends Fragment {
                     Log.v(LOG_TAG, "Artist Name: " + name);
                 }
 
-                mSearchResults.clear();
-                mSearchResults.addAll(artistsName);
+                rowItems.add(mArtist);
+
+                //mSearchResults.clear();
+                //mSearchResults.addAll(artistsName);
             }
         }
     }
