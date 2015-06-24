@@ -1,5 +1,6 @@
 package com.whalesocks.spotifystreamer;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ public class Top10TracksActivityFragment extends Fragment {
     private List<RowItem> rowItems;
     Top10TracksAdapter tracksAdapter;
     String artistSportifyId = null;
+    String artistName = null;
 
     public Top10TracksActivityFragment() {
     }
@@ -40,17 +42,19 @@ public class Top10TracksActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_top10_tracks, container, false);
 
+        ActionBar actionbar = getActivity().getActionBar();
+
         rowItems = new ArrayList<>();
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_artist_top_10_tracks);
         tracksAdapter = new Top10TracksAdapter(getActivity(),rowItems);
         listView.setAdapter(tracksAdapter);
 
-
-
         Intent intent = getActivity().getIntent();
-        if (intent !=null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            artistSportifyId = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (intent !=null && intent.hasExtra("spotifyId")) {
+            artistSportifyId = intent.getStringExtra("spotifyId");
+            artistName = intent.getStringExtra("artist");
+            actionbar.setSubtitle(artistName);
         }
 
         fetchTop10Tracks(artistSportifyId);

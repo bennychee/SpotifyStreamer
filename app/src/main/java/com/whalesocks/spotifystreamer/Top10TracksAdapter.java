@@ -34,7 +34,7 @@ public class Top10TracksAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.image = (ImageView) view.findViewById(R.id.image_view_top10_tracks);
             holder.trackName = (TextView) view.findViewById(R.id.text_view_top10_track_name);
-            holder.albumName = (TextView) view.findViewById(R.id.text_view_top10_track_album_name);
+            holder.albumName = (TextView) view.findViewById(R.id.text_view_top10_album_name);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();

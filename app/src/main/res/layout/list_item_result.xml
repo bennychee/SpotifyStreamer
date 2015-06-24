@@ -5,7 +5,7 @@
     android:padding="5dip">
 
     <LinearLayout
-        android:id="@+id/thumbnail"
+        android:id="@+id/tracks_thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dip"
@@ -23,9 +23,9 @@
         android:id="@+id/text_view_artist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/thumbnail"
-        android:layout_toRightOf="@id/thumbnail"
-        android:layout_toEndOf="@id/thumbnail"
+        android:layout_alignTop="@id/tracks_thumbnail"
+        android:layout_toRightOf="@id/tracks_thumbnail"
+        android:layout_toEndOf="@id/tracks_thumbnail"
         android:textSize="20dip"
         android:textStyle="bold"
         android:text="ColdPlay"/>

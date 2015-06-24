@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -78,8 +77,11 @@ public class MainActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String artistSpotifyId = rowItems.get(position).getSpotifyId();
+                String artistName = rowItems.get(position).getArtistName();
+                Log.v(LOG_TAG, "artist = " + artistName);
                 Intent intent = new Intent(getActivity(), Top10TracksActivity.class);
-                intent.putExtra(Intent.EXTRA_TEXT, artistSpotifyId);
+                intent.putExtra("spotifyId", artistSpotifyId);
+                intent.putExtra("artist", artistName);
                 startActivity(intent);
             }
         });
