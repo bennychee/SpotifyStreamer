@@ -1,6 +1,5 @@
 package com.whalesocks.spotifystreamer;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,13 +34,19 @@ public class Top10TracksActivityFragment extends Fragment {
     String artistName = null;
 
     public Top10TracksActivityFragment() {
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+/*
+        getActivity().getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setSubtitle("Subtitle");
+*/
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -50,9 +54,10 @@ public class Top10TracksActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_top10_tracks, container, false);
 
-
-        getActivity().requestWindowFeature(Window.FEATURE_ACTION_BAR);
-        ActionBar actionbar = getActivity().getActionBar();
+/*
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setSubtitle("Subtitle");
+*/
 
         rowItems = new ArrayList<>();
 
@@ -64,7 +69,8 @@ public class Top10TracksActivityFragment extends Fragment {
         if (intent !=null && intent.hasExtra("spotifyId")) {
             artistSportifyId = intent.getStringExtra("spotifyId");
             artistName = intent.getStringExtra("artist");
-            actionbar.setSubtitle(artistName);
+
+//            actionBar.setSubtitle(artistName);
         }
 
         fetchTop10Tracks(artistSportifyId);

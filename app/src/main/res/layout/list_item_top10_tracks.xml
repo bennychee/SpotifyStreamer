@@ -27,17 +27,16 @@
         android:layout_alignTop="@id/tracks_thumbnail"
         android:layout_toRightOf="@id/tracks_thumbnail"
         android:layout_toEndOf="@id/tracks_thumbnail"
-        android:textSize="20dip"
+        android:textSize="18dip"
         android:textStyle="bold"
-        android:text="Viva La Vida"/>
+        android:text="Praise to the Lord Almighty"/>
 
     <TextView
         android:id="@+id/text_view_top10_album_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dip"
-        android:textStyle="bold"
-        android:text="ColdPlay"
+        android:textSize="15dip"
+        android:text="Hymns of Praise"
         android:layout_below="@+id/text_view_top10_track_name"
         android:layout_toRightOf="@+id/tracks_thumbnail"
         android:layout_toEndOf="@+id/tracks_thumbnail" />
