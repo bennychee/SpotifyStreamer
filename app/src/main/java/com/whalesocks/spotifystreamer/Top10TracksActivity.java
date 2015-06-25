@@ -1,6 +1,5 @@
 package com.whalesocks.spotifystreamer;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -14,8 +13,6 @@ public class Top10TracksActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top10_tracks);
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setSubtitle("Subtitle");
     }
 
 

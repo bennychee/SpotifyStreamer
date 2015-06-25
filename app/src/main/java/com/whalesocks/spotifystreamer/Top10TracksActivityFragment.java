@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,32 +34,15 @@ public class Top10TracksActivityFragment extends Fragment {
     Top10TracksAdapter tracksAdapter;
     String artistSportifyId = null;
     String artistName = null;
-
-    public Top10TracksActivityFragment() {
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-/*
-        getActivity().getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setSubtitle("Subtitle");
-*/
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+    ActionBar actionBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_top10_tracks, container, false);
 
-/*
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setSubtitle("Subtitle");
-*/
+
+        actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
 
         rowItems = new ArrayList<>();
 
@@ -70,7 +55,7 @@ public class Top10TracksActivityFragment extends Fragment {
             artistSportifyId = intent.getStringExtra("spotifyId");
             artistName = intent.getStringExtra("artist");
 
-//            actionBar.setSubtitle(artistName);
+            actionBar.setSubtitle(artistName);
         }
 
         fetchTop10Tracks(artistSportifyId);
